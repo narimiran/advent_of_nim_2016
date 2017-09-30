@@ -20,8 +20,10 @@ proc isSSL(sup, hyp: string): bool =
       return true
 
 
+let pattern = re"\[|\]"
+
 for line in f.lines:
-  let nets = line.split(re"\[|\]")
+  let nets = line.split(pattern)
   var
     hyp = ""
     sup = ""

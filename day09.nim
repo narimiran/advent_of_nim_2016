@@ -1,10 +1,13 @@
 import nre
 import strutils
 
-let f = open("./inputs/09 - Explosives in Cyberspace.txt").readLine
+let 
+  f = open("./inputs/09 - Explosives in Cyberspace.txt").readLine
+  pattern = re"\(\d+x\d+\)"
+
 
 proc unzip(s: string, secondPart = false): int =
-  let parens = s.find(re"\(\d+x\d+\)")
+  let parens = s.find(pattern)
   if parens.isNone:
     return len(s)
 
