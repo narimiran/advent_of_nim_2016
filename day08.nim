@@ -3,7 +3,7 @@ import deques
 import osproc
 import os
 
-let f = open("./inputs/08 - Two-Factor Authentication.txt")
+let input = readFile("./inputs/08 - Two-Factor Authentication.txt").splitLines
 
 const
   width = 50
@@ -21,7 +21,7 @@ for _ in 1..height:
   lcd.add(rows)
 
 
-proc createRect(lcd: var seq[Deque[char]], size: string): seq[Deque[char]] =
+proc createRect(lcd: var seq[Deque[char]], size: string) =
   let
     dimensions = size.split('x')
     w = parseint(dimensions[0])
@@ -29,28 +29,20 @@ proc createRect(lcd: var seq[Deque[char]], size: string): seq[Deque[char]] =
   for y in 0..<h:
     for x in 0..<w:
       lcd[y][x] = on
-  return lcd
 
 
-proc rotate(line: var Deque[char], amount: int): Deque[char] =
+proc rotate(line: var Deque[char], amount: int) =
   for _ in 1..amount:
     line.addFirst(line.popLast)
-  return line
 
 
-proc rotateRow(lcd: var seq[Deque[char]], row, amount: int): seq[Deque[char]] =
-  lcd[row] = rotate(lcd[row], amount)
-  return lcd
-
-
-proc rotateCol(lcd: var seq[Deque[char]], column, amount: int): seq[Deque[char]] =
+proc rotateCol(lcd: var seq[Deque[char]], column, amount: int) =
   var col = initDeque[char]()
   for r in 0..<len(lcd):
     col.addLast(lcd[r][column])
-  col = rotate(col, amount)
+  col.rotate(amount)
   for r in 0..<len(lcd):
     lcd[r][column] = col[r]
-  return lcd
 
 
 proc getPosition(pos: string): int =
@@ -67,14 +59,17 @@ proc print(lcd: seq[Deque[char]]) =
   sleep(100)
 
 
-for line in f.lines:
+for line in input:
   let words = line.split
-  if words[0] == "rect":
-    lcd = lcd.createRect(words[1])
-  elif words[1] == "row":
-    lcd = lcd.rotateRow(getPosition(words[2]), parseInt(words[^1]))
-  else:
-    lcd = lcd.rotateCol(getPosition(words[2]), parseInt(words[^1]))
+  case words[0]
+  of "rect": lcd.createRect(words[1])
+  of "rotate":
+    let
+      amount = parseInt(words[^1])
+      position = getPosition(words[2])
+    case words[1]
+    of "row": lcd[position].rotate(amount)
+    of "column": lcd.rotateCol(position, amount)
   lcd.print
 
 for line in lcd:
