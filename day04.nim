@@ -3,11 +3,11 @@ import strutils
 import sets
 
 
-let f = open("./inputs/04 - Security Through Obscurity.txt")
+const input = readFile("./inputs/04 - Security Through Obscurity.txt").splitLines
 
 proc getLetterCount(name: string): seq[tuple[count: int, letter: char]] =
   result = @[]
-  for ch in toSet(name):
+  for ch in name.toSet:
     result.add((-name.count(ch), ch))
   return result.sorted(cmp)
 
@@ -25,7 +25,7 @@ proc decryptName(name: string, sector: int): string =
 
 var total: int
 
-for line in f.lines:
+for line in input:
   let name = line[0..^12].replace("-", "")
   let sector = line[^10..^8].parseInt
   let chSum = line[^6..^2]

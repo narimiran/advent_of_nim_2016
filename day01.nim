@@ -1,9 +1,7 @@
 import complex
-from strutils import split, parseInt
+import strutils
 
-
-let input = readLine open("./inputs/01 - No Time for a Taxicab.txt")
-let instructions = input.split(", ")
+const instructions = readFile("./inputs/01 - No Time for a Taxicab.txt").strip.split(", ")
 
 proc rotate(dir: Complex, rot: char): Complex =
   result = dir

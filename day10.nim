@@ -2,7 +2,7 @@ import algorithm
 import strutils
 import tables
 
-let f = open("./inputs/10 - Balance Bots.txt")
+const input = readFile("./inputs/10 - Balance Bots.txt").splitLines
 
 var
   stack: seq[int] = @[]
@@ -30,7 +30,7 @@ proc sendValue(connection: string, value: int) =
     outputs[outName] = value
 
 
-for line in f.lines:
+for line in input:
   let words = line.split
   if line.startsWith("value"):
     let

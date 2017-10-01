@@ -1,6 +1,9 @@
 import complex
+from strutils import splitLines
 
 const
+  instructions = readFile("./inputs/02 - Bathroom Security.txt").splitLines
+
   KEYPAD_1 = @[
     ['1', '2', '3'],
     ['4', '5', '6'],
@@ -18,11 +21,6 @@ const
   ]
   CENTER_2 = (2.0, 2.0) # position of a center
   START_2 = (-2.0, 0.0) # position of '5' relative to the center
-
-
-var instructions: seq[string] = @[]
-for line in lines open("./inputs/02 - Bathroom Security.txt"):
-  instructions.add(line)
 
 
 proc isInside(pos: Complex, kpad: seq): bool =
@@ -54,9 +52,10 @@ proc solve(instructions: seq[string], kpad: seq, start, center: Complex) =
 
   for line in instructions:
     stdout.write(getKey(center + findKey(line), kpad))
+  echo "\n"
 
 
 echo "The bathroom code is:"
 solve(instructions, KEYPAD_1, START_1, CENTER_1)
-echo "\nAnd for the other keypad:"
+echo "And for the other keypad:"
 solve(instructions, KEYPAD_2, START_2, CENTER_2)

@@ -1,9 +1,8 @@
 import nre
 import strutils
 
-let 
-  f = open("./inputs/09 - Explosives in Cyberspace.txt").readLine
-  pattern = re"\(\d+x\d+\)"
+const f = readFile("./inputs/09 - Explosives in Cyberspace.txt")
+let pattern = re"\(\d+x\d+\)"
 
 
 proc unzip(s: string, secondPart = false): int =

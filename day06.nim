@@ -2,7 +2,7 @@ from algorithm import sorted
 import strutils
 import sets
 
-let f = open("./inputs/06 - Signals and Noise.txt")
+const input = readFile("./inputs/06 - Signals and Noise.txt").splitLines
 var
   mostCommon = ""
   leastCommon = ""
@@ -16,7 +16,7 @@ proc letterCount(column: string): seq[tuple[count: int, letter: char]] =
   return result.sorted(cmp)
 
 
-for line in f.lines:
+for line in input:
   for i, c in line:
     columns[i].add(c)
 
