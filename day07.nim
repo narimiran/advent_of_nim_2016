@@ -1,7 +1,9 @@
 import nre
 import strutils
 
-let f = open("./inputs/07 - Internet Protocol Version 7.txt")
+let
+  input = readFile("./inputs/07 - Internet Protocol Version 7.txt").splitLines
+  pattern = re"\[|\]"
 
 var
   tls: int
@@ -13,16 +15,13 @@ proc isABBA(line: string): bool =
     if a == d and b == c and a != b:
       return true
 
-proc isSSL(sup, hyp: string): bool =
+proc isSSL(sup, hyp: string): int =
   for i in 0..sup.len-3:
     let (a, b, c) = (sup[i], sup[i+1], sup[i+2])
     if a == c and a != b and b&a&b in hyp:
-      return true
+      return 1
 
-
-let pattern = re"\[|\]"
-
-for line in f.lines:
+for line in input:
   let nets = line.split(pattern)
   var
     hyp = ""
@@ -34,8 +33,7 @@ for line in f.lines:
       hyp.add(word & " ")
   if isABBA(sup) and not isABBA(hyp):
     tls += 1
-  if sup.isSSL(hyp):
-    ssl += 1
+  ssl += isSSL(sup, hyp)
 
 
 echo "Number of TLS supporting addresses: ", tls
