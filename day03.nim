@@ -1,14 +1,14 @@
 from algorithm import sorted
-from strutils import splitWhitespace, parseInt
+from strutils import splitLines, splitWhitespace, parseInt
 from sequtils import map
 
 
-let f = open("./inputs/03 - Squares With Three Sides.txt")
+const input = readFile("./inputs/03 - Squares With Three Sides.txt").splitLines
 
 var
-  firstCol: seq[int] = @[]
-  secondCol: seq[int] = @[]
-  thirdCol: seq[int] = @[]
+  firstCol: array[input.len, int]
+  secondCol: array[input.len, int]
+  thirdCol: array[input.len, int]
   horizontalTriangles: int
   verticalTriangles: int
 
@@ -17,13 +17,13 @@ proc isTriangle(sides: seq[int]): bool =
   return sl[0] + sl[1] > sl[2]
 
 
-for candidate in f.lines:
+for i, candidate in input:
   let line = candidate.splitWhitespace.map(parseInt)
   if line.isTriangle: horizontalTriangles += 1
 
-  firstCol.add(line[0])
-  secondCol.add(line[1])
-  thirdCol.add(line[2])
+  firstCol[i] = line[0]
+  secondCol[i] = line[1]
+  thirdCol[i] = line[2]
 
 for column in [firstCol, secondCol, thirdCol]:
   for i in countup(0, high(column)-2, 3):
