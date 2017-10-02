@@ -10,8 +10,12 @@ const
   height = 6
   on = '#'
 
+type
+  Row = Deque[char]
+  Lcd = seq[Row]
+
 var
-  lcd: seq[Deque[char]] = @[]
+  lcd: Lcd = @[]
   rows = initDeque[char]()
   lit = 0
 
@@ -21,7 +25,7 @@ for _ in 1..height:
   lcd.add(rows)
 
 
-proc createRect(lcd: var seq[Deque[char]], size: string) =
+proc createRect(lcd: var Lcd, size: string) =
   let
     dimensions = size.split('x')
     w = parseint(dimensions[0])
@@ -31,12 +35,12 @@ proc createRect(lcd: var seq[Deque[char]], size: string) =
       lcd[y][x] = on
 
 
-proc rotate(line: var Deque[char], amount: int) =
+proc rotate(line: var Row, amount: int) =
   for _ in 1..amount:
     line.addFirst(line.popLast)
 
 
-proc rotateCol(lcd: var seq[Deque[char]], column, amount: int) =
+proc rotateCol(lcd: var Lcd, column, amount: int) =
   var col = initDeque[char]()
   for r in 0..<len(lcd):
     col.addLast(lcd[r][column])
@@ -49,7 +53,7 @@ proc getPosition(pos: string): int =
   return parseInt pos.split('=')[1]
 
 
-proc print(lcd: seq[Deque[char]]) =
+proc print(lcd: Lcd) =
   discard execCmd "clear"
   for line in lcd:
     var row = ""
