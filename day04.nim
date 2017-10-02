@@ -4,14 +4,18 @@ import sets
 
 
 const input = readFile("./inputs/04 - Security Through Obscurity.txt").splitLines
+type
+  LetterCount = tuple
+    count: int
+    letter: char
 
-proc getLetterCount(name: string): seq[tuple[count: int, letter: char]] =
+proc getLetterCount(name: string): seq[LetterCount] =
   result = @[]
   for ch in name.toSet:
     result.add((-name.count(ch), ch))
   return result.sorted(cmp)
 
-proc findTopXLetters(letterCount: seq[tuple[count: int, letter: char]], x = 5): string =
+proc findTopXLetters(letterCount: seq[LetterCount], x = 5): string =
   result = ""
   for entry in letterCount[0..<x]:
     result.add(entry.letter)
