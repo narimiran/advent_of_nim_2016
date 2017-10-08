@@ -1,14 +1,13 @@
 import complex
 import strutils
+import tables
 
-const instructions = readFile("./inputs/01 - No Time for a Taxicab.txt").strip.split(", ")
-
-proc rotate(dir: Complex, rot: char): Complex =
-  result = dir
-  case rot
-  of 'L': result *= (0.0, 1.0)
-  of 'R': result *= (0.0, -1.0)
-  else: discard
+const
+  instructions = readFile("./inputs/01 - No Time for a Taxicab.txt").strip.split(", ")
+  rotation = {
+    'L': (re: 0.0, im: 1.0),
+    'R': (re: 0.0, im: -1.0)
+  }.toTable
 
 proc manhattan(pos: Complex): float =
   abs(pos.re) + abs(pos.im)
@@ -22,7 +21,7 @@ var
 for instr in instructions:
   let rot = instr[0]
   let length = parseInt instr[1..^1]
-  direction = rotate(direction, rot)
+  direction *= rotation[rot]
 
   for _ in 1..length:
     position += direction
